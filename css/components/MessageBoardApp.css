@@ -1,6 +1,6 @@
-@import "Comments.css";
+@import "CommentList.css";
 
-message-board {
+message-board-app {
   display: block;
   width: 100%;
   max-width: 600px;
@@ -8,7 +8,7 @@ message-board {
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
 }
 
-message-board nav {
+message-board-app nav {
   display: flex;
   justify-content: center;
   padding: 15px 20px;
@@ -18,23 +18,23 @@ message-board nav {
   position: relative;
 }
 
-message-board .add-comment {
+message-board-app .add-comment {
   padding: 1rem 20px;
   background-color: #eff1f3;
 }
 
-message-board .add-comment form {
+message-board-app .add-comment form {
   display: flex;
 }
 
-message-board .add-comment input {
+message-board-app .add-comment input {
   background-color: hsl(217, 10%, 70%);
   color: hsl(217, 20%, 10%);
   flex-grow: 1;
   margin-right: 5px;
 }
 
-message-board .add-comment input::placeholder {
+message-board-app .add-comment input::placeholder {
   color: hsl(217, 20%, 10%);
   opacity: 0.85;
 }

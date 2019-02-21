@@ -1,4 +1,4 @@
-message-board-comment {
+message-board-comment-item {
   position: relative;
 
   border-bottom: 1px solid hsl(217, 50%, 20%);
@@ -7,11 +7,11 @@ message-board-comment {
   transition: background-color 150ms;
 }
 
-message-board-comment:hover {
+message-board-comment-item:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-message-board-comment .delete-button {
+message-board-comment-item .delete-button {
   position: absolute;
   right: 0;
   top: 0;
@@ -22,6 +22,6 @@ message-board-comment .delete-button {
   transition: opacity 350ms;
 }
 
-message-board-comment:hover .delete-button {
+message-board-comment-item:hover .delete-button {
   opacity: 1;
 }

@@ -1,6 +1,6 @@
-@import "Comment.css";
+@import "CommentItem.css";
 
-message-board-comments {
+message-board-comment-list {
   display: flex;
   flex-direction: column;
   background-color: #eff1f3;
