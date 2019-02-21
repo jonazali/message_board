@@ -59,6 +59,10 @@ class MessageBoardAPI {
     });
   }
 
+  getAllComments() {
+    return this.comments;
+  }
+
   /**
    * Filters comments by a substring contained in the text
    * @param {string} substring Substring to be filtered

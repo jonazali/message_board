@@ -6,8 +6,8 @@ class MessageBoardApp extends HTMLElement {
 
     this.api = new MessageBoardAPI(commentData);
     this.state = {
-      comments: this.api.comments
-      //comments: this.api.getCommentsSortedByTime(),
+      comments: this.api.getAllComments()
+      //comments: this.api.getCommentsSortedByTime()
     };
 
     // event listeners

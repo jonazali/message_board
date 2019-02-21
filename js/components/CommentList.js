@@ -15,7 +15,7 @@ export default class CommentList extends HTMLElement {
 
   //avoid using..asd
   //this.comments = "new comment"
-
+  //
   set comments(val) {
     this.setAttribute("comments", JSON.stringify(val));
   }
