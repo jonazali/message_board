@@ -47,6 +47,7 @@ class MessageBoardApp extends HTMLElement {
           />
           <button type="submit">Search</button>
         </form>
+        <button type="button" id="nukeButton">Nuke all Comments</button>
       </nav>
       <message-board-comment-list></message-board-comment-list>
         <div class="add-comment">
@@ -76,6 +77,9 @@ class MessageBoardApp extends HTMLElement {
       "submit",
       this.handleAddComment
     );
+    document
+      .getElementById("nukeButton")
+      .addEventListener("click", this.handleNuke);
   }
 
   handleSearchSubmit = event => {
@@ -105,7 +109,9 @@ class MessageBoardApp extends HTMLElement {
   };
 
   handleUpdateComment = event => {
-    const text = window.prompt("Type something new: ");
+    const originalText = event.target.comment.text;
+
+    const text = window.prompt("Type something new: ", originalText);
     if (text != null) {
       const updatedComments = this.api.updateComment(
         event.target.comment.id,
@@ -114,6 +120,13 @@ class MessageBoardApp extends HTMLElement {
       this.setState({ comments: updatedComments });
     }
   };
+
+  // handleNuke = event => {
+  //   const confirmed = window.confirm(`Do you want to nuke?`);
+  //   if (confirmed) {
+  //     forEach.comment
+  //   }
+  // };
 }
 
 export default MessageBoardApp;
