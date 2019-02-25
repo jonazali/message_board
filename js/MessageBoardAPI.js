@@ -1,6 +1,15 @@
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 class MessageBoardAPI {
   constructor(comments = []) {
     this.comments = comments;
+  }
+
+  //return all comments
+  getComments() {
+    return wait(5000).then(() => this.comments);
   }
 
   /**
@@ -9,17 +18,19 @@ class MessageBoardAPI {
    * @returns {array} Updated comments array
    */
   addComment(text) {
-    const id =
-      this.comments.length > 0
-        ? this.comments[this.comments.length - 1].id + 1
-        : 0;
-    const timestamp = Date.now();
-    this.comments.push({
-      text,
-      id,
-      timestamp
+    return wait(1000).then(() => {
+      const id =
+        this.comments.length > 0
+          ? this.comments[this.comments.length - 1].id + 1
+          : 0;
+      const timestamp = Date.now();
+      this.comments.push({
+        text,
+        id,
+        timestamp
+      });
+      return this.comments;
     });
-    return this.comments;
   }
 
   /**
@@ -29,8 +40,10 @@ class MessageBoardAPI {
    * @returns {array} Updated comments array
    */
   updateComment(id, text) {
-    this.comments.find(comment => comment.id === id).text = text;
-    return this.comments;
+    return wait(1000).then(() => {
+      this.comments.find(comment => comment.id === id).text = text;
+      return this.comments;
+    });
   }
 
   /**
@@ -39,9 +52,11 @@ class MessageBoardAPI {
    * @returns {array} Updated comments array
    */
   removeComment(id) {
-    const index = this.comments.findIndex(comment => comment.id === id);
-    this.comments.splice(index, 1);
-    return this.comments;
+    return wait(1000).then(() => {
+      const index = this.comments.findIndex(comment => comment.id === id);
+      this.comments.splice(index, 1);
+      return this.comments;
+    });
   }
 
   /**
@@ -68,9 +83,11 @@ class MessageBoardAPI {
    * @param {string} substring Substring to be filtered
    * @returns {array} Filtered array of comment objects
    */
-  filterCommentsByText(substring) {
-    return this.comments.filter(comment =>
-      comment.text.toLowerCase().includes(substring.toLowerCase())
+  filterCommentsByText(substring = "") {
+    return wait(1000).then(() =>
+      this.comments.filter(comment =>
+        comment.text.toLowerCase().includes(substring.toLowerCase())
+      )
     );
   }
 }
