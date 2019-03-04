@@ -1,15 +1,21 @@
 function wait(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
 class MessageBoardAPI {
   constructor(comments = []) {
     this.comments = comments;
   }
 
+  load() {
+    document.getElementById("loader").style.display = "block";
+    return wait(1000).then(
+      () => (document.getElementById("loader").style.display = "none")
+    );
+  }
+
   //return all comments
   getComments() {
-    return wait(5000).then(() => this.comments);
+    return wait(1000).then(() => this.comments);
   }
 
   /**

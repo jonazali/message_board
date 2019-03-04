@@ -1,4 +1,4 @@
-import MessageBoardAPI, { commentData } from "../MessageBoardAPI.js";
+import MessageBoardAPI, { commentData } from '../MessageBoardAPI.js';
 
 class MessageBoardApp extends HTMLElement {
   constructor() {
@@ -6,36 +6,40 @@ class MessageBoardApp extends HTMLElement {
 
     this.api = new MessageBoardAPI(commentData);
     this.state = {
-      comments: []
+      comments: [],
+      loading: true,
     };
 
     // event listeners
-    this.addEventListener("removeComment", this.handleRemoveComment);
+    this.addEventListener('removeComment', this.handleRemoveComment);
 
-    this.addEventListener("updateComment", this.handleUpdateComment);
+    this.addEventListener('updateComment', this.handleUpdateComment);
   }
 
-  //setState({comments: updated comments})
+  // setState({comments: updated comments})
   // for each piece of state
   setState(newState) {
-    Object.keys(newState).forEach(key => {
-      //update the correct key
-      //this.state.comments =  updatedComments
+    Object.keys(newState).forEach((key) => {
+      // update the correct key
+      // this.state.comments =  updatedComments
       this.state[key] = newState[key];
-      //select all child elements tracking this piece of state via attributes
-      this.querySelectorAll(`[${key}]`).forEach(element => {
-        //sets the attribute
+      // select all child elements tracking this piece of state via attributes
+      this.querySelectorAll(`[${key}]`).forEach((element) => {
+        // sets the attribute
         element[key] = newState[key];
-        //element.setAttribute('comments', JSON.stringify(this.state.comments))
+        // element.setAttribute('comments', JSON.stringify(this.state.comments))
       });
     });
   }
 
   connectedCallback() {
-    this.api.getComments().then(comments => {
-      //this.setate({ comments: comments })
+    this.api.getComments().then((comments) => {
+      // this.setate({ comments: comments })
       this.setState({ comments });
     });
+
+    // this.load(this.state.loading);
+    console.log('RESTART');
     // this.state = {
     //   comments: this.api.getComments()
     //   //comments: this.api.getCommentsSortedByTime()
@@ -70,65 +74,83 @@ class MessageBoardApp extends HTMLElement {
         </div>
     `;
 
-    this.querySelector("message-board-comment-list").setAttribute(
-      "comments",
-      JSON.stringify(this.state.comments)
+    this.querySelector('message-board-comment-list').setAttribute(
+      'comments',
+      JSON.stringify(this.state.comments),
     );
 
     // add event listeners
-    this.querySelector("nav form").addEventListener(
-      "submit",
-      this.handleSearchSubmit
+    this.querySelector('nav form').addEventListener(
+      'submit',
+      this.handleSearchSubmit,
     );
-    this.querySelector(".add-comment form").addEventListener(
-      "submit",
-      this.handleAddComment
+    this.querySelector('.add-comment form').addEventListener(
+      'submit',
+      this.handleAddComment,
     );
     document
-      .getElementById("nukeButton")
-      .addEventListener("click", this.handleNuke);
+      .getElementById('nukeButton')
+      .addEventListener('click', this.handleNuke);
   }
 
-  handleSearchSubmit = async event => {
+  handleSearchSubmit = async (event) => {
     event.preventDefault();
 
-    const searchText = new FormData(event.target).get("search");
-    console.log(searchText);
+    this.setState({ loading: false });
+    console.log(this.state.loading);
+
+    this.api.load();
+
+    const searchText = new FormData(event.target).get('search');
+
     const updatedComments = await this.api.filterCommentsByText(searchText);
+
     this.setState({ comments: updatedComments });
+    this.setState({ loading: true });
+
+    console.log(this.state.loading);
   };
 
-  handleAddComment = async event => {
+  handleAddComment = async (event) => {
     event.preventDefault();
-    const commentText = new FormData(event.target).get("comment");
+    this.api.load();
+    const commentText = new FormData(event.target).get('comment');
     event.target.reset();
     const updatedComments = await this.api.addComment(commentText);
     this.setState({ comments: updatedComments });
   };
 
-  handleRemoveComment = async event => {
+  handleRemoveComment = async (event) => {
     console.log(event.detail);
     const confirmed = window.confirm(`Really delete ${event.detail} ?`);
     if (confirmed) {
       const updatedComments = await this.api.removeComment(
-        event.target.comment.id
+        event.target.comment.id,
       );
       this.setState({ comments: updatedComments });
     }
   };
 
-  handleUpdateComment = async event => {
+  handleUpdateComment = async (event) => {
     const originalText = event.target.comment.text;
 
-    const text = window.prompt("Type something new: ", originalText);
+    const text = window.prompt('Type something new: ', originalText);
     if (text != null) {
       const updatedComments = await this.api.updateComment(
         event.target.comment.id,
-        text
+        text,
       );
       this.setState({ comments: updatedComments });
     }
   };
+
+  // load(temp) {
+  //   if (temp) {
+  //     document.getElementById("loader").style.display = "block";
+  //   } else {
+  //     document.getElementById("loader").style.display = "none";
+  //   }
+  // }
 
   // handleNuke = event => {
   //   const confirmed = window.confirm(`Do you want to nuke?`);
