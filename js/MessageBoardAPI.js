@@ -4,18 +4,22 @@ function wait(ms) {
 class MessageBoardAPI {
   constructor(comments = []) {
     this.comments = comments;
+    this.url = 'https://express-train.herokuapp.com/api/comments';
   }
 
   load() {
-    document.getElementById("loader").style.display = "block";
+    document.getElementById('loader').style.display = 'block';
     return wait(1000).then(
-      () => (document.getElementById("loader").style.display = "none")
+      () => (document.getElementById('loader').style.display = 'none')
     );
   }
 
-  //return all comments
+  // return all comments
   getComments() {
-    return wait(1000).then(() => this.comments);
+    // return wait(1000).then(() => this.comments);
+    return fetch('https://express-train.herokuapp.com/api/comments').then(
+      response => response.json()
+    );
   }
 
   /**
@@ -24,19 +28,29 @@ class MessageBoardAPI {
    * @returns {array} Updated comments array
    */
   addComment(text) {
-    return wait(1000).then(() => {
-      const id =
-        this.comments.length > 0
-          ? this.comments[this.comments.length - 1].id + 1
-          : 0;
-      const timestamp = Date.now();
-      this.comments.push({
-        text,
-        id,
-        timestamp
-      });
-      return this.comments;
-    });
+    // return wait(1000).then(() => {
+    //   const id =        this.comments.length > 0
+    //       ? this.comments[this.comments.length - 1].id + 1
+    //       : 0;
+    //   const timestamp = Date.now();
+    //   this.comments.push({
+    //     text,
+    //     id,
+    //     timestamp
+    //   });
+    //   return this.comments;
+    // });
+    const body = {
+      // text: text
+      text
+    };
+    return fetch('https://express-train.herokuapp.com/api/comments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    }).then(response => response.json());
   }
 
   /**
@@ -58,11 +72,14 @@ class MessageBoardAPI {
    * @returns {array} Updated comments array
    */
   removeComment(id) {
-    return wait(1000).then(() => {
-      const index = this.comments.findIndex(comment => comment.id === id);
-      this.comments.splice(index, 1);
-      return this.comments;
-    });
+    // return wait(1000).then(() => {
+    //   const index = this.comments.findIndex(comment => comment.id === id);
+    //   this.comments.splice(index, 1);
+    //   return this.comments;
+    // });
+    return fetch(`https://express-train.herokuapp.com/api/comments/${id}`, {
+      method: 'DELETE'
+    }).then(response => response.json());
   }
 
   /**
@@ -89,12 +106,14 @@ class MessageBoardAPI {
    * @param {string} substring Substring to be filtered
    * @returns {array} Filtered array of comment objects
    */
-  filterCommentsByText(substring = "") {
-    return wait(1000).then(() =>
-      this.comments.filter(comment =>
-        comment.text.toLowerCase().includes(substring.toLowerCase())
-      )
-    );
+  filterCommentsByText(substring = '') {
+    // return wait(1000).then(() => this.comments.filter(comment => comment.text.toLowerCase().includes(substring.toLowerCase())));
+    return fetch(
+      `https://express-train.herokuapp.com/api/comments/?filter=${substring}`,
+      {
+        method: 'GET'
+      }
+    ).then(response => response.json());
   }
 }
 
@@ -103,27 +122,27 @@ export default MessageBoardAPI;
 // Use this comment data for testing
 export const commentData = [
   {
-    text: "Love this!",
+    text: 'Love this!',
     id: 1,
     timestamp: 1549581565
   },
   {
-    text: "Super good",
+    text: 'Super good',
     id: 2,
     timestamp: 1549577965
   },
   {
-    text: "You are the best",
+    text: 'You are the best',
     id: 3,
     timestamp: 1549495165
   },
   {
-    text: "Ramen is my fav food ever",
+    text: 'Ramen is my fav food ever',
     id: 4,
     timestamp: 1548976765
   },
   {
-    text: "Nice Nice Nice!",
+    text: 'Nice Nice Nice!',
     id: 5,
     timestamp: 1546903165
   }

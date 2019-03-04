@@ -7,7 +7,7 @@ class MessageBoardApp extends HTMLElement {
     this.api = new MessageBoardAPI(commentData);
     this.state = {
       comments: [],
-      loading: true,
+      loading: true
     };
 
     // event listeners
@@ -76,17 +76,17 @@ class MessageBoardApp extends HTMLElement {
 
     this.querySelector('message-board-comment-list').setAttribute(
       'comments',
-      JSON.stringify(this.state.comments),
+      JSON.stringify(this.state.comments)
     );
 
     // add event listeners
     this.querySelector('nav form').addEventListener(
       'submit',
-      this.handleSearchSubmit,
+      this.handleSearchSubmit
     );
     this.querySelector('.add-comment form').addEventListener(
       'submit',
-      this.handleAddComment,
+      this.handleAddComment
     );
     document
       .getElementById('nukeButton')
@@ -116,18 +116,21 @@ class MessageBoardApp extends HTMLElement {
     this.api.load();
     const commentText = new FormData(event.target).get('comment');
     event.target.reset();
-    const updatedComments = await this.api.addComment(commentText);
-    this.setState({ comments: updatedComments });
+    // const updatedComments = await this.api.addComment(commentText);
+    // this.setState({ comments: updatedComments });
+
+    const responseBody = await this.api.addComment(commentText);
+    this.setState({ comments: responseBody.comments });
   };
 
   handleRemoveComment = async (event) => {
-    console.log(event.detail);
     const confirmed = window.confirm(`Really delete ${event.detail} ?`);
     if (confirmed) {
-      const updatedComments = await this.api.removeComment(
-        event.target.comment.id,
+      const responseBody = await this.api.removeComment(
+        event.target.comment.id
       );
-      this.setState({ comments: updatedComments });
+
+      this.setState({ comments: responseBody.comments });
     }
   };
 
@@ -138,7 +141,7 @@ class MessageBoardApp extends HTMLElement {
     if (text != null) {
       const updatedComments = await this.api.updateComment(
         event.target.comment.id,
-        text,
+        text
       );
       this.setState({ comments: updatedComments });
     }
