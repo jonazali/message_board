@@ -7,7 +7,7 @@ class MessageBoardApp extends HTMLElement {
     this.api = new MessageBoardAPI(commentData);
     this.state = {
       comments: this.api.getAllComments()
-      //comments: this.api.getCommentsSortedByTime()
+      // comments: this.api.getCommentsSortedByTime()
     };
 
     // event listeners
@@ -16,18 +16,18 @@ class MessageBoardApp extends HTMLElement {
     this.addEventListener("updateComment", this.handleUpdateComment);
   }
 
-  //setState({comments: updated comments})
+  // setState({comments: updated comments})
   // for each piece of state
   setState(newState) {
-    Object.keys(newState).forEach(key => {
-      //update the correct key
-      //this.state.comments =  updatedComments
+    Object.keys(newState).forEach((key) => {
+      // update the correct key
+      // this.state.comments =  updatedComments
       this.state[key] = newState[key];
-      //select all child elements tracking this piece of state via attributes
-      this.querySelectorAll(`[${key}]`).forEach(element => {
-        //sets the attribute
+      // select all child elements tracking this piece of state via attributes
+      this.querySelectorAll(`[${key}]`).forEach((element) => {
+        // sets the attribute
         element[key] = newState[key];
-        //element.setAttribute('comments', JSON.stringify(this.state.comments))
+        // element.setAttribute('comments', JSON.stringify(this.state.comments))
       });
     });
   }
@@ -82,7 +82,7 @@ class MessageBoardApp extends HTMLElement {
       .addEventListener("click", this.handleNuke);
   }
 
-  handleSearchSubmit = event => {
+  handleSearchSubmit = (event) => {
     event.preventDefault();
 
     const searchText = new FormData(event.target).get("search");
@@ -91,7 +91,7 @@ class MessageBoardApp extends HTMLElement {
     this.setState({ comments: updatedComments });
   };
 
-  handleAddComment = event => {
+  handleAddComment = (event) => {
     event.preventDefault();
     const commentText = new FormData(event.target).get("comment");
     event.target.reset();
@@ -99,7 +99,7 @@ class MessageBoardApp extends HTMLElement {
     this.setState({ comments: updatedComments });
   };
 
-  handleRemoveComment = event => {
+  handleRemoveComment = (event) => {
     console.log(event.detail);
     const confirmed = window.confirm(`Really delete ${event.detail} ?`);
     if (confirmed) {
@@ -108,7 +108,7 @@ class MessageBoardApp extends HTMLElement {
     }
   };
 
-  handleUpdateComment = event => {
+  handleUpdateComment = (event) => {
     const originalText = event.target.comment.text;
 
     const text = window.prompt("Type something new: ", originalText);

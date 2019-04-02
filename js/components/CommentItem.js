@@ -29,15 +29,11 @@ export default class CommentItem extends HTMLElement {
       <button type="button" class="update-button">Edit</button>
     `;
 
-    //create a custom event and emit it
-    this.querySelector("button.delete-button").addEventListener("click", () =>
-      this.dispatchRemoveEvent(this.removeEvent)
-    );
+    // create a custom event and emit it
+    this.querySelector("button.delete-button").addEventListener("click", () => this.dispatchRemoveEvent(this.removeEvent));
 
-    //create the edit event
-    this.querySelector("button.update-button").addEventListener("click", () =>
-      this.dispatchUpdateEvent(this.editEvent)
-    );
+    // create the edit event
+    this.querySelector("button.update-button").addEventListener("click", () => this.dispatchUpdateEvent(this.editEvent));
   }
 
   dispatchRemoveEvent = () => {
